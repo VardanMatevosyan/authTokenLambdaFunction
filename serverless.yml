@@ -3,9 +3,6 @@ service: auth-token-lambda-function
 plugins:
   - serverless-pseudo-parameters
 
-custom:
-  vpcConfig: ${file(vpc-config.yml)}
-
 provider:
   name: aws
   runtime: java21
@@ -13,7 +10,7 @@ provider:
   memorySize: 512
   timeout: 20
   stage: ${opt:stage, 'dev'}
-  vpc: ${self:custom.vpcConfig:${self:provider.stage}}
+  vpc: ${file(vpc_config.yml):${self:provider.stage}}
   deploymentBucket:
     name: aws-demo-${self:provider.stage}-serverless-deployment
     maxPreviousDeploymentArtifacts: 5
@@ -43,7 +40,7 @@ functions:
     handler: demo.handlers.PreTokenGenerationHandler::handleRequest
     timeout: 30
     provisionedConcurrency: 1
-    vpc: ${self:custom.vpcConfig:${self:provider.stage}}
+    vpc: ${file(vpc_config.yml):${self:provider.stage}}
     events:
       - cognitoUserPool:
           pool: ${self:provider.environment.COGNITO_USER_POOL_ID}
