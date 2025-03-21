@@ -34,7 +34,7 @@ provider:
 #        - arn:aws:ssm:#{AWS::Region}:#{AWS::AccountId}:parameter/demo-aws/*
 
 package:
-  artifact: build/libs/authTokenLambdaFunction.jar
+  artifact: build/libs/project.jar
 
 functions:
   authTokenLambdaFunction:
