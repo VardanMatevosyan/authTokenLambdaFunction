@@ -44,9 +44,9 @@ commands:
       - run:
           name: Check STAGE Value
           command: echo "Deploying to STAGE=$STAGE"
-#      - run:
-#          name: Install plugins
-#          command: serverless plugin install --name serverless-pseudo-parameters
+      - run:
+          name: Checking the JAR file exists
+          command: ls -la build/libs
       - run:
           name: Deploy
           command: serverless deploy -v --stage $STAGE
