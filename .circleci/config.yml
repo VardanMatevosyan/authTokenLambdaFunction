@@ -51,13 +51,13 @@ commands:
       - run:
           name: Export PACKAGE_NAME
           command: |
-            echo "export PACKAGE_NAME=$CI_ENVIRONMENT_SLUG-$CI_COMMIT_SHORT_SHA" >> ~/.bashrc
-            source ~/.bashrc
+            echo "export PACKAGE_NAME=$CI_ENVIRONMENT_SLUG-$CI_COMMIT_SHORT_SHA" >> $BASH_ENV
+            source $BASH_ENV
             echo "Package name is $PACKAGE_NAME"
       - run:
           name: Deploy
           command: serverless deploy -v --stage $STAGE --stack-name auth-token-lambda-$STAGE --aws-profile default --region $REGION
-#  export PACKAGE_NAME=$CI_ENVIRONMENT_SLUG-$CI_COMMIT_SHORT_SHA
+
 jobs:
   build-job:
     executor: java-executor
