@@ -49,7 +49,7 @@ commands:
           command: ls -la build/libs
       - run:
           name: Deploy
-          command: serverless deploy -v --stage $STAGE --stack-name auth-toke-lambda-$STAGE
+          command: serverless deploy -v --stage $STAGE --stack-name auth-token-lambda-$STAGE
 
 jobs:
   build-job:
