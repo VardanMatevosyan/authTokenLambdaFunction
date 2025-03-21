@@ -78,5 +78,6 @@ workflows:
             - build-job
           context:
             - aws-credentials
+            - aws-serverless-context
             - dev-context  # for prod this would be changed to prod-context and more job with dev-context for dev branch would be added
 
