@@ -38,7 +38,7 @@ commands:
       - persist_to_workspace:
           root: .
           paths:
-            - ~/*.jar
+            - build/libs/*.jar
   deploy-sls-command:
     steps:
       - run:
@@ -50,7 +50,7 @@ commands:
       - run:
           name: Deploy
           command: serverless deploy -v --stage $STAGE --stack-name auth-token-lambda-$STAGE --aws-profile default --region $REGION
-
+#  export PACKAGE_NAME=$CI_ENVIRONMENT_SLUG-$CI_COMMIT_SHORT_SHA
 jobs:
   build-job:
     executor: java-executor
