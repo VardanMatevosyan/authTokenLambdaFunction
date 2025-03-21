@@ -31,7 +31,6 @@ commands:
   build-app-command:
     description: "Build authTokenLambdaFunction"
     steps:
-      - run: ls -la build/libs/
       - checkout
       - run: ls -la build/libs/
       - run:
