@@ -51,7 +51,7 @@ commands:
       - run:
           name: Export PACKAGE_NAME
           command: |
-            export PACKAGE_NAME=$CI_ENVIRONMENT_SLUG-$CI_COMMIT_SHORT_SHA \
+            export PACKAGE_NAME=$CI_ENVIRONMENT_SLUG-$CI_COMMIT_SHORT_SHA
             echo "Package name is $PACKAGE_NAME"
       - run:
           name: Deploy
