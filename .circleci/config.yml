@@ -46,7 +46,7 @@ commands:
           command: echo "Deploying to STAGE=$STAGE"
       - run:
           name: Checking the JAR file exists
-          command: ls -la build/libs
+          command: ls -la
       - run:
           name: Deploy
           command: serverless deploy -v --stage $STAGE --stack-name auth-token-lambda-$STAGE --aws-profile default --region $REGION
