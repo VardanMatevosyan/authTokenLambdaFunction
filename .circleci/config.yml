@@ -1,0 +1,82 @@
+version: 2.1
+
+orbs:
+  aws-cli: circleci/aws-cli@3.1
+  serverless-framework: circleci/serverless-framework@2.0
+
+only-main-branch-filter: &only-main-branch-filter
+  filters:
+    branches:
+      only:
+        - main
+        - /^.*testing-deploy.*$/
+      ignore:
+        - feature/*
+
+executors:
+  sls-executor:
+    docker:
+      - image: serverless-framework/default
+  java-executor:
+    docker:
+      - image: cimg/openjdk:21.0
+  aws-cli-executor:
+    docker:
+      - image: amazon/aws-cli
+  base-executor:
+    docker:
+      - image: cimg/base:stable
+
+commands:
+  build-app-command:
+    description: "Build authTokenLambdaFunction"
+    steps:
+      - checkout
+      - run:
+          name: Build
+          command: gradle clean build -x test
+      - persist_to_workspace:
+          root: .
+          paths:
+            - build/libs/*.jar
+  deploy-sls-command:
+    steps:
+      - run:
+          name: Check STAGE Value
+          command: echo "Deploying to STAGE=$STAGE"
+      - run:
+          name: Install plugins
+          command: serverless plugin install --name serverless-pseudo-parameters
+      - run:
+          name: Deploy
+          command: serverless deploy -v --stage $STAGE
+
+jobs:
+  build-job:
+    executor: java-executor
+    steps:
+      - checkout
+      - build-app-command
+  deploy-job:
+    executor: sls-executor
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - aws-cli/setup
+      - serverless-framework/setup
+      - deploy-sls-command
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build-job
+      - deploy-job:
+          <<: *only-main-branch-filter
+          requires:
+            - build-job
+          context:
+            - aws-credentials
+            - dev-context  # for prod this would be changed to prod-context and more job with dev-context for dev branch would be added
+

@@ -1,0 +1,6 @@
+dev:
+  securityGroupIds:
+    - ${ssm:/demo-aws/SG-lambda-authTokenModifierFuncation}
+  subnetIds:
+    - ${ssm:/demo-aws/ExistingVpcPrivateSubnet1A}
+    - ${ssm:/demo-aws/ExistingVpcPrivateSubnet1B}
