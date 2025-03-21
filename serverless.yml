@@ -5,6 +5,7 @@ plugins:
 
 provider:
   name: aws
+  stackName: auth-token-lambda-${self:provider.stage}
   runtime: java21
   region: ${opt:region, 'eu-central-1'}
   memorySize: 512
