@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    posgresqlVersion='42.7.4'
+}
+
+dependencies {
+    implementation 'com.amazonaws:aws-lambda-java-core:1.2.2'
+    implementation 'com.amazonaws:aws-lambda-java-events:3.11.0'
+    implementation "org.postgresql:postgresql:${posgresqlVersion}"
+    testImplementation 'junit:junit:4.13.2'
+}
+
+sourceCompatibility = 21
+targetCompatibility = 21
+
+
+tasks.register("fatJar", Jar) {
+    archiveClassifier.set("")
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from sourceSets.main.output
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    manifest {
+        attributes(
+                'Main-Class': 'demo.handlers.PreTokenGenerationHandler'
+        )
+    }
+}
+
+tasks.named("build") {
+    dependsOn(fatJar)  // ✅ Ensure fatJar runs on build
+}

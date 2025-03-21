@@ -1,0 +1,47 @@
+service: auth-token-lambda-function
+
+plugins:
+  - serverless-pseudo-parameters
+
+provider:
+  name: aws
+  runtime: java21
+  region: ${opt:region, 'eu-central-1'}
+  memorySize: 512
+  timeout: 20
+  stage: ${opt:stage, 'dev'}
+  vpc: ${file(vpc-config.yml):${self.provider.stage}}
+  deploymentBucket:
+    name: aws-demo-${self:provider.stage}-serverless-deployment
+    maxPreviousDeploymentArtifacts: 5
+  environment:
+    DB_HOST_URL: ${ssm:/demo-aws/RDS_ENDPOINT}
+    DB_USER: ${ssm:/demo-aws/RDS_USERNAME}
+    DB_PASSWORD: ${ssm:/demo-aws/RDS_PASSWORD}
+    DB_PORT: ${ssm:/demo-aws/RDS_PORT}
+    COGNITO_USER_POOL_ID: ${ssm:/demo-aws/COGNITO_USER_POOL_ID}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - rds:DescribeDBInstances
+        - rds:Connect
+      Resource: "*"
+    - Effect: Allow
+      Action:
+        - ssm:GetParameter
+      Resource:
+        - arn:aws:ssm:#{AWS::Region}:#{AWS::AccountId}:parameter/demo-aws/*
+
+package:
+  artifact: build/libs/authTokenLambdaFunction.jar
+
+functions:
+  authTokenLambdaFunction:
+    handler: demo.handlers.PreTokenGenerationHandler::handleRequest
+    timeout: 30
+    provisionedConcurrency: 1
+    vpc: ${file(vpc-config.yml):${self.provider.stage}}
+    events:
+      - cognitoUserPool:
+          pool: ${self:provider.environment.COGNITO_USER_POOL_ID}
+          trigger: PreTokenGeneration
