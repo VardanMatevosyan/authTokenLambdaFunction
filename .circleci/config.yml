@@ -14,9 +14,9 @@ only-main-branch-filter: &only-main-branch-filter
         - feature/*
 
 executors:
-  sls-executor:
-    docker:
-      - image: serverless-framework/default
+#  sls-executor:
+#    docker:
+#      - image: serverless-framework/default
   java-executor:
     docker:
       - image: cimg/openjdk:21.0
@@ -58,7 +58,7 @@ jobs:
       - checkout
       - build-app-command
   deploy-job:
-    executor: sls-executor
+    executor: serverless-framework/default
     steps:
       - checkout
       - attach_workspace:
