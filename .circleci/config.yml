@@ -49,7 +49,7 @@ commands:
           command: ls -la build/libs
       - run:
           name: Deploy
-          command: serverless deploy -v --stage $STAGE --stack-name auth-token-lambda-$STAGE --aws-profile default
+          command: serverless deploy -v --stage $STAGE --stack-name auth-token-lambda-$STAGE --aws-profile default --region $REGION
 
 jobs:
   build-job:
