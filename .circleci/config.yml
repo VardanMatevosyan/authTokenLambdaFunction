@@ -31,8 +31,6 @@ commands:
   build-app-command:
     description: "Build authTokenLambdaFunction"
     steps:
-      - checkout
-      - run: ls -la build/libs/
       - run:
           name: Build
           command: gradle clean build -x test
