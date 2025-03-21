@@ -56,7 +56,7 @@ commands:
             echo "Package name is: $PACKAGE_NAME"
       - run:
           name: Deploy
-          command: serverless deploy -v --stage $STAGE --stack-name auth-token-lambda-$STAGE --aws-profile default --region $REGION
+          command: serverless deploy -v
 
 jobs:
   build-job:
