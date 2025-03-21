@@ -30,7 +30,8 @@ provider:
       Action:
         - ssm:GetParameter
       Resource:
-        - arn:aws:ssm:#{AWS::Region}:#{AWS::AccountId}:parameter/demo-aws/*
+        - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/demo-aws/*"
+#        - arn:aws:ssm:#{AWS::Region}:#{AWS::AccountId}:parameter/demo-aws/*
 
 package:
   artifact: build/libs/authTokenLambdaFunction.jar
