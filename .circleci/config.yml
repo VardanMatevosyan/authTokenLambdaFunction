@@ -38,7 +38,7 @@ commands:
       - persist_to_workspace:
           root: .
           paths:
-            - /*.jar
+            - ~/*.jar
   deploy-sls-command:
     steps:
       - run:
