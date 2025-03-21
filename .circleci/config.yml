@@ -35,6 +35,7 @@ commands:
       - run:
           name: Build
           command: gradle clean build -x test
+      - run: ls -la build/libs/
       - persist_to_workspace:
           root: .
           paths:
@@ -47,6 +48,11 @@ commands:
       - run:
           name: Checking the JAR file exists
           command: ls -la build/libs/
+      - run:
+          name: Export PACKAGE_NAME
+          command: |
+            export PACKAGE_NAME=$CI_ENVIRONMENT_SLUG-$CI_COMMIT_SHORT_SHA \
+            echo "Package name is $PACKAGE_NAME"
       - run:
           name: Deploy
           command: serverless deploy -v --stage $STAGE --stack-name auth-token-lambda-$STAGE --aws-profile default --region $REGION
