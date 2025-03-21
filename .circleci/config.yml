@@ -51,7 +51,7 @@ commands:
       - run:
           name: Export PACKAGE_NAME
           command: |
-            echo 'export PACKAGE_NAME="${CIRCLE_BRANCH}-$(echo ${CIRCLE_SHA1} | cut -c1-8)"' >> $BASH_ENV
+            echo 'export PACKAGE_NAME="${CIRCLE_PROJECT_REPONAME}-$(echo ${CIRCLE_SHA1} | cut -c1-8)"' >> $BASH_ENV
             source $BASH_ENV
             echo "Package name is: $PACKAGE_NAME"
       - run:
