@@ -64,6 +64,12 @@ commands:
           name: Deploy
           command: sls deploy --stage $STAGE
 
+  install_tar_command:
+    steps:
+      - run:
+          name: Install tar
+          command: yum install -y tar
+
 jobs:
   build-job:
     executor: java-executor
@@ -74,6 +80,7 @@ jobs:
     executor: aws-cli-executor
     steps:
       - checkout
+      - install_tar_command
       - attach_workspace:
           at: .
       - aws-cli/setup
