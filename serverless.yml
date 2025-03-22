@@ -41,7 +41,6 @@ functions:
   authTokenLambdaFunction:
     handler: demo.handlers.PreTokenGenerationHandler::handleRequest
     timeout: 30
-    provisionedConcurrency: 1
     vpc: ${file(vpc_config.yml):${self:provider.stage}}
     events:
       - cognitoUserPool:

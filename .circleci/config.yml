@@ -13,15 +13,9 @@ only-main-branch-filter: &only-main-branch-filter
         - feature/*
 
 executors:
-#  sls-executor:
-#    docker:
-#      - image: serverless-framework/default
   java-executor:
     docker:
       - image: cimg/openjdk:21.0
-#  aws-cli-executor:
-#    docker:
-#      - image: amazon/aws-cli
   node-executor:
     docker:
       - image: cimg/node:lts
@@ -62,12 +56,6 @@ commands:
       - run:
           name: Deploy
           command: sls deploy --stage $STAGE
-
-#  install_tar_command:
-#    steps:
-#      - run:
-#          name: Install tar
-#          command: yum install -y tar
 
 jobs:
   build-job:
