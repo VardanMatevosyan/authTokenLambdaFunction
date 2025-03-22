@@ -77,7 +77,7 @@ jobs:
       - checkout
       - build-app-command
   deploy-job:
-    executor: aws-cli-executor
+    executor: base-executor
     steps:
       - checkout
 #      - install_tar_command
