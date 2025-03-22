@@ -20,9 +20,9 @@ import java.util.Map;
 public class PreTokenGenerationHandler implements RequestHandler<CognitoUserPoolPreTokenGenerationEvent, CognitoUserPoolPreTokenGenerationEvent> {
 
     private static final String DB_HOST_URL = System.getenv("DB_HOST_URL");
-    private static final String DB_USER = System.getenv("RDS_USERNAME");
-    private static final String DB_PASSWORD = System.getenv("RDS_PASSWORD");
-    private static final String DB_PORT = System.getenv("RDS_PORT");
+    private static final String DB_USER = System.getenv("DB_USER");
+    private static final String DB_PASSWORD = System.getenv("DB_PASSWORD");
+    private static final String DB_PORT = System.getenv("DB_PORT");
     private static final String DB_URL = "jdbc:postgresql://%s:%s/postgres".formatted(DB_HOST_URL, DB_PORT);
 
     public CognitoUserPoolPreTokenGenerationEvent handleRequest(final CognitoUserPoolPreTokenGenerationEvent event, final Context context) {

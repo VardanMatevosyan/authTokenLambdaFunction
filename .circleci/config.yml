@@ -2,7 +2,6 @@ version: 2.1
 
 orbs:
   aws-cli: circleci/aws-cli@3.1
-  serverless-framework: circleci/serverless-framework@2.0
 
 only-main-branch-filter: &only-main-branch-filter
   filters:
@@ -14,42 +13,49 @@ only-main-branch-filter: &only-main-branch-filter
         - feature/*
 
 executors:
-  sls-executor:
-    docker:
-      - image: serverless-framework/default
   java-executor:
     docker:
       - image: cimg/openjdk:21.0
-  aws-cli-executor:
+  node-executor:
     docker:
-      - image: amazon/aws-cli
-  base-executor:
-    docker:
-      - image: cimg/base:stable
+      - image: cimg/node:lts
 
 commands:
   build-app-command:
     description: "Build authTokenLambdaFunction"
     steps:
-      - checkout
       - run:
           name: Build
           command: gradle clean build -x test
+      - run: ls -la build/libs/
       - persist_to_workspace:
           root: .
           paths:
-            - build/libs/*.jar
+            - build/libs/
+      - run: ls -la build/libs/
   deploy-sls-command:
     steps:
       - run:
           name: Check STAGE Value
           command: echo "Deploying to STAGE=$STAGE"
       - run:
-          name: Install plugins
-          command: serverless plugin install --name serverless-pseudo-parameters
+          name: Checking the JAR file exists
+          command: ls -la build/libs/
+      - run:
+          name: Install serverless cli
+          command: |
+            npm install -g serverless@3
+            echo "sls version is: $(which sls)"
+            echo "sls version is: $(sls -v)"
+      - run:
+          command: |
+            echo 'export PACKAGE_NAME="${CIRCLE_PROJECT_REPONAME}-$(echo ${CIRCLE_SHA1} | cut -c1-8)"' >> $BASH_ENV
+            source $BASH_ENV
+            echo "Package name is: $PACKAGE_NAME"
+          name: Export PACKAGE_NAME
       - run:
           name: Deploy
-          command: serverless deploy -v --stage $STAGE
+          command: sls deploy --stage $STAGE
 
 jobs:
   build-job:
@@ -58,13 +64,11 @@ jobs:
       - checkout
       - build-app-command
   deploy-job:
-    executor: sls-executor
+    executor: node-executor
     steps:
       - checkout
       - attach_workspace:
           at: .
-      - aws-cli/setup
-      - serverless-framework/setup
       - deploy-sls-command
 
 workflows:
@@ -77,6 +81,6 @@ workflows:
           requires:
             - build-job
           context:
-            - aws-credentials
+            - aws-serverless-context
             - dev-context  # for prod this would be changed to prod-context and more job with dev-context for dev branch would be added
 
