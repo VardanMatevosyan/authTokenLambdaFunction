@@ -42,8 +42,8 @@ functions:
     handler: demo.handlers.PreTokenGenerationHandler::handleRequest
     timeout: 30
     vpc: ${file(vpc_config.yml):${self:provider.stage}}
-    events:
-      - cognitoUserPool:
-          pool: ${self:provider.environment.COGNITO_USER_POOL_ID}
-          trigger: PreTokenGeneration
-          existing: true
+#    events:
+#      - cognitoUserPool:
+#          pool: ${self:provider.environment.COGNITO_USER_POOL_ID}
+#          trigger: PreTokenGeneration
+#          existing: true
