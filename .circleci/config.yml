@@ -19,12 +19,12 @@ executors:
   java-executor:
     docker:
       - image: cimg/openjdk:21.0
-  aws-cli-executor:
-    docker:
-      - image: amazon/aws-cli
-#  base-executor:
+#  aws-cli-executor:
 #    docker:
-#      - image: cimg/base:stable
+#      - image: amazon/aws-cli
+  base-executor:
+    docker:
+      - image: cimg/base:stable
 
 commands:
   build-app-command:
@@ -64,11 +64,11 @@ commands:
           name: Deploy
           command: sls deploy --stage $STAGE
 
-  install_tar_command:
-    steps:
-      - run:
-          name: Install tar
-          command: yum install -y tar
+#  install_tar_command:
+#    steps:
+#      - run:
+#          name: Install tar
+#          command: yum install -y tar
 
 jobs:
   build-job:
@@ -80,10 +80,10 @@ jobs:
     executor: aws-cli-executor
     steps:
       - checkout
-      - install_tar_command
+#      - install_tar_command
       - attach_workspace:
           at: .
-      - aws-cli/setup
+#      - aws-cli/setup
       - deploy-sls-command
 
 workflows:
