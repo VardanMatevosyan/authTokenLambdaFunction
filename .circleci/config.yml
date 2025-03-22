@@ -50,7 +50,7 @@ commands:
       - run:
           name: Install serverless cli
           command: |
-            npm install -g serverless
+            npm install -g serverless@3
             echo "sls version is: $(which sls)"
             echo "sls version is: $(sls -v)"
       - run:
