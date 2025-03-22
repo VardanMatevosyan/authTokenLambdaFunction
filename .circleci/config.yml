@@ -50,7 +50,7 @@ commands:
       - run:
           name: Install serverless cli
           command: |
-            npm install -g serverless
+            curl -o- -L https://slss.io/install | bash
             echo "serverless version is: " serverless -v
             echo "list of profiles: "
             aws configure list-profiles
