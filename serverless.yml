@@ -44,6 +44,6 @@ functions:
     vpc: ${file(vpc_config.yml):${self:provider.stage}}
     events:
       - cognitoUserPool:
-          pool: ${self:provider.environment.COGNITO_USER_POOL_ID}
+          pool: ${ssm:/demo-aws/COGNITO_USER_POOL_ID}
           trigger: PreTokenGeneration
           existing: true
