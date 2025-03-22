@@ -22,9 +22,9 @@ executors:
 #  aws-cli-executor:
 #    docker:
 #      - image: amazon/aws-cli
-  base-executor:
+  node-executor:
     docker:
-      - image: cimg/base:stable
+      - image: cimg/node:lts
 
 commands:
   build-app-command:
@@ -50,17 +50,17 @@ commands:
       - run:
           name: Install serverless cli
           command: |
-            curl -o- -L https://slss.io/install | bash
-            echo "serverless version is: $(which serverless)"
-#            echo "serverless version is: $(sls -v)"
-#            echo "list of profiles: "
-#            sls config credentials list
+            npm install -g serverless
+            echo "sls version is: $(which sls)"
+            echo "sls version is: $(sls -v)"
+            echo "list of profiles: "
+            sls config credentials list
       - run:
-          name: Export PACKAGE_NAME
           command: |
             echo 'export PACKAGE_NAME="${CIRCLE_PROJECT_REPONAME}-$(echo ${CIRCLE_SHA1} | cut -c1-8)"' >> $BASH_ENV
             source $BASH_ENV
             echo "Package name is: $PACKAGE_NAME"
+          name: Export PACKAGE_NAME
       - run:
           name: Deploy
           command: sls deploy --stage $STAGE
@@ -78,13 +78,11 @@ jobs:
       - checkout
       - build-app-command
   deploy-job:
-    executor: base-executor
+    executor: node-executor
     steps:
       - checkout
-#      - install_tar_command
       - attach_workspace:
           at: .
-#      - aws-cli/setup
       - deploy-sls-command
 
 workflows:
