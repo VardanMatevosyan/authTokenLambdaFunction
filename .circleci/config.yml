@@ -53,8 +53,6 @@ commands:
             npm install -g serverless
             echo "sls version is: $(which sls)"
             echo "sls version is: $(sls -v)"
-            echo "list of profiles: "
-            sls config credentials list
       - run:
           command: |
             echo 'export PACKAGE_NAME="${CIRCLE_PROJECT_REPONAME}-$(echo ${CIRCLE_SHA1} | cut -c1-8)"' >> $BASH_ENV
