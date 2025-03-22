@@ -51,9 +51,10 @@ commands:
           name: Install serverless cli
           command: |
             curl -o- -L https://slss.io/install | bash
-            echo "serverless version is: $(sls -v)"
-            echo "list of profiles: "
-            sls config credentials list
+            echo "serverless version is: $(which serverless)"
+#            echo "serverless version is: $(sls -v)"
+#            echo "list of profiles: "
+#            sls config credentials list
       - run:
           name: Export PACKAGE_NAME
           command: |
