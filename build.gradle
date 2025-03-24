@@ -39,5 +39,5 @@ tasks.register("fatJar", Jar) {
 }
 
 tasks.named("build") {
-    dependsOn(fatJar)  // ✅ Ensure fatJar runs on build
+    dependsOn(fatJar)
 }
