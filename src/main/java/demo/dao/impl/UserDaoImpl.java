@@ -21,7 +21,7 @@ public class UserDaoImpl {
   public List<String> getPermissions(String idpSub) {
     final String query = "SELECT up.permission_name AS permissions "
         + " FROM \"aws-demo\".user AS u "
-        + " INNER JOIN \"aws-demo\".user_permission AS up ON u.id = up.user_id "
+        + " INNER JOIN user_permission AS up ON u.id = up.user_id "
         + " WHERE u.idp_sub=? ";
 
     try {
