@@ -6,3 +6,7 @@
 
 _The Security Group and User Poll was already exists
 If not then ideal to add config for these two resource to the serverless template_
+
+# Serverless Framework was used to implement the configuration of teh AWS lambda and deploy with AWS Cloudformation
+* [Introduction to Serverless Framework for AWS](https://www.serverless.com/framework/docs)
+* For example - [Cognito description](https://www.serverless.com/framework/docs/providers/aws/events/cognito-user-pool)
